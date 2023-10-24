@@ -70,52 +70,56 @@ db.restaurants.find({'address.coord':{$lt: -95.754168}})
 ### 11. Write a MongoDB query to find the restaurants that do not prepare any cuisine of 'American' and their grade score is more than 70 and latitude is less than -65.754168.
 solution:
 ```php
-
+ExercisePractice> db.restaurants.find({$and:[{cuisine:{$ne:'American '}},{grades:{$elemMatch:{score:{$gt:70}}}},{'address.coord':{$lt:-65.754168}}]})
 ```
-### 12. Write a MongoDB query to find the restaurants that do not prepare any cuisine of 'American' and achieved a score more than 70 and located in longitude less than -65.754168.
+### 12. Write a MongoDB query to find the restaurants that do not prepare any cuisine of 'American' and achieved a score more than 70 and located in longitude less than -65.754168. `Note`: Do this query without using $and operator.
 solution:
 ```php
-
+db.restaurants.find( { cuisine:{$ne:'American '}, grades:{$elemMatch:{score:{$gt:70}}}, 'address.coord':{$lt:-65.754168}})
 ```
+
 ### 13. Write a MongoDB query to find the restaurants that do not prepare any cuisine of 'American' and achieved a grade point 'A' not belonging to the borough Brooklyn.
 solution:
 ```php
-
+db.restaurants.find({cuisine:{$ne:'American '}, grades:{$elemMatch:{grade:'A'}}, borough:{$ne:'Brooklyn'}}).sort({cuisine:-1})
 ```
 ### 14. Write a MongoDB query to find the restaurant Id, name, borough, and cuisine for those restaurants which contain 'Wil' as the first three letters in its name.
 solution:
 ```php
-
+db.restaurants.find({name: /^Wil/},{restaurant_id:true, name:true, borough:true, _id:false})
 ```
 ### 15. Write a MongoDB query to find the restaurant Id, name, borough, and cuisine for those restaurants which contain 'ces' as the last three letters in its name.
 solution:
 ```php
-
+db.restaurants.find({name:/ces$/},{restaurant_id:true, name:true, borough:true, cuisine:true, _id:false})
 ```
 ### 16. Write a MongoDB query to find the restaurant Id, name, borough, and cuisine for those restaurants which contain 'Reg' as three letters somewhere in its name.
 solution:
 ```php
-
+db.restaurants.find({name:/.*Reg.*/}, {restaurant_id:true, name:true, borough:true, cuisine:true, _id:false})
 ```
 ### 17. Write a MongoDB query to find the restaurants that belong to the borough Bronx and prepare either American or Chinese dishes.
 solution:
 ```php
-
+db.restaurants.find({borough:'Bronx' , $or:[{cuisine:'American '}, {cuisine:'Chinese'}]})
 ```
 ### 18. Write a MongoDB query to find the restaurant Id, name, borough, and cuisine for those restaurants which belong to the borough Staten Island, Queens, Bronx, or Brooklyn.
 solution:
 ```php
-
+db.restaurants.find({borough:{$in:['Staten Island', 'Queens', 'Bronx', 'Brooklyn']}})
 ```
 ### 19. Write a MongoDB query to find the restaurant Id, name, borough, and cuisine for those restaurants which do not belong to the borough Staten Island, Queens, Bronx, or Brooklyn.
 solution:
 ```php
-
+db.restaurants.find({borough:{$nin:['Staten Island', 'Queens', 'Bronx', 'Brooklyn']}},{restaurant_id:true, name:true, borough:true, cuisine:true, _id:false})
 ```
 ### 20. Write a MongoDB query to find the restaurant Id, name, borough, and cuisine for those restaurants which achieved a score that is not more than 10.
 solution:
 ```php
+db.restaurants.find({'grades.score':{$lte:10}}, {restaurant_id:true, name:true, borough:true, cuisine:true, _id:false})
 
+        //OR
+db.restaurants.find({'grades.score':{$not:{$gt:10}}}, {restaurant_id:true, name:true, borough:true, cuisine:true, _id:false})
 ```
 ### 21. Write a MongoDB query to find the restaurant Id, name, borough, and cuisine for those restaurants which prepare dishes except 'American' and 'Chinese' or restaurants whose name begins with the letter 'Wil'.
 solution:

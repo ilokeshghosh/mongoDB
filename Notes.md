@@ -89,7 +89,19 @@ db.students.find()
 db.students.find({fullTime:false}, {name:true, age:true, _id:false})
 ```
 
+### Find text at first
+```php
+db.restaurants.find({name: /^Wil/},{restaurant_id:true, name:true, borough:true, _id:false})
+```
 
+### Find text at last
+```php
+db.restaurants.find({name:/ces$/},{restaurant_id:true, name:true, borough:true, cuisine:true, _id:false})
+```
+### Find text at somewhere
+```php
+db.restaurants.find({name:/.*Reg.*/}, {restaurant_id:true, name:true, borough:true, cuisine:true, _id:false})
+```
 # Update
 ### Update One(`.updateOne(filter,update)`) using (`$set`)
 ```php
@@ -171,7 +183,7 @@ db.students.deleteMany({registerDate:{$exists:false}})
   db.students.find({name:{$in:['Harry', 'Jack', 'Julia']}})
 ```
 
-### not-int operator
+### not-in operator
 ```php
   db.students.find({name:{$nin:['Harry','Julia','Jack']}})
 ```
