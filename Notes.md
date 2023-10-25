@@ -102,6 +102,17 @@ db.restaurants.find({name:/ces$/},{restaurant_id:true, name:true, borough:true, 
 ```php
 db.restaurants.find({name:/.*Reg.*/}, {restaurant_id:true, name:true, borough:true, cuisine:true, _id:false})
 ```
+### Find certain data types
+```php
+db.restaurants.find({'address.coord':{$type:'double'}})
+//              OR
+
+db.restaurants.find({'address.coord':{$type:1}})
+```
+### Find using `$mod` to check divisibility
+```php
+db.restaurants.find({'grades.score':{$mod:[7,0]}})
+```
 # Update
 ### Update One(`.updateOne(filter,update)`) using (`$set`)
 ```php
