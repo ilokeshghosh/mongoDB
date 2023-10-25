@@ -121,55 +121,59 @@ db.restaurants.find({'grades.score':{$lte:10}}, {restaurant_id:true, name:true, 
         //OR
 db.restaurants.find({'grades.score':{$not:{$gt:10}}}, {restaurant_id:true, name:true, borough:true, cuisine:true, _id:false})
 ```
+//to check
 ### 21. Write a MongoDB query to find the restaurant Id, name, borough, and cuisine for those restaurants which prepare dishes except 'American' and 'Chinese' or restaurants whose name begins with the letter 'Wil'.
 solution:
 ```php
-
+db.restaurants.find({name:/^Wil/, cuisine:{$nin:['American ', 'Chinese']}},{_id:false, restaurant_id:true, name:true, borough:true, cuisine:1})
 ```
 ### 22. Write a MongoDB query to find the restaurant Id, name, and grades for those restaurants which achieved a grade of "A" and scored 11 on an ISODate "2014-08-11T00:00:00Z."
 solution:
 ```php
-
+db.restaurants.find({'grades.grade':'A', 'grades.score':11, 'grades.date':ISODate('2014-08-11T00:00:00Z')},{restaurant_id:true, name:true, grades:true, _id:false})
 ```
 ### 23. Write a MongoDB query to find the restaurant Id, name, and grades for those restaurants where the 2nd element of the grades array contains a grade of "A" and a score of 9 on an ISODate "2014-08-11T00:00:00Z."
 solution:
 ```php
-
+db.restaurants.find({'grades.1.grade':'A', 'grades.1.score':9, 'grades.1.date':ISODate('2014-08-11T00:00:00Z')},{restaurant_id:true, name:true, grades:true})
 ```
 ### 24. Write a MongoDB query to find the restaurant Id, name, address, and geographical location for those restaurants where the 2nd element of the coord array contains a value which is more than 42 and up to 52.
 solution:
 ```php
-
+ db.restaurants.find({'address.coord.1':{$gt:42, $lte:52}},{restaurant_id:true, name:true, 'address':1})
 ```
 ### 25. Write a MongoDB query to arrange the names of the restaurants in ascending order along with all the columns.
 solution:
 ```php
-
+db.restaurants.find().sort({name:1})
 ```
 ### 26. Write a MongoDB query to arrange the names of the restaurants in descending order along with all the columns.
 solution:
 ```php
-
+db.restaurants.find().sort({name:-1})
 ```
 ### 27. Write a MongoDB query to arrange the names of the cuisine in ascending order, and for that same cuisine, the borough should be in descending order.
 solution:
 ```php
-
+db.restaurants.find().sort({cuisine:1, borough:-1})
 ```
 ### 28. Write a MongoDB query to determine whether all the addresses contain the word "street" or not.
 solution:
 ```php
-
+db.restaurants.find({'address.street':{$exists:true}})
 ```
 ### 29. Write a MongoDB query to select all documents in the restaurants collection where the coord field value is Double.
 solution:
 ```php
+db.restaurants.find({'address.coord':{$type:'double'}})
+//              OR
 
+db.restaurants.find({'address.coord':{$type:1}})
 ```
 ### 30. Write a MongoDB query to select the restaurant Id, name, and grades for those restaurants where the score divided by 7 results in a remainder of 0.
 solution:
 ```php
-
+db.restaurants.find({'grades.score':{$mod:[7,0]}}, {_id:false, restaurant_id:true, name:true, grades:true})
 ```
 ### 31. Write a MongoDB query to find the restaurant name, borough, longitude, and latitude, and cuisine for those restaurants which contain 'mon' as three letters somewhere in its name.
 solution:
