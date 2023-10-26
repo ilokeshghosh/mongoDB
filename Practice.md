@@ -178,52 +178,57 @@ db.restaurants.find({'grades.score':{$mod:[7,0]}}, {_id:false, restaurant_id:tru
 ### 31. Write a MongoDB query to find the restaurant name, borough, longitude, and latitude, and cuisine for those restaurants which contain 'mon' as three letters somewhere in its name.
 solution:
 ```php
-
+db.restaurants.find({name:/.*mon.*/},{name:true, borough:true, cuisine:true,'address.coord':true, _id:false})
 ```
 ### 32. Write a MongoDB query to find the restaurant name, borough, longitude, and latitude, and cuisine for those restaurants which contain 'Mad' as the first three letters of its name.
 solution:
 ```php
-
+db.restaurants.find({name:/^Mad/},{name:true, borough:true, 'address.coord':true, cuisine:true, _id:false})
 ```
 ### 33. Write a MongoDB query to find the restaurants that have at least one grade with a score of less than 5.
 solution:
 ```php
-
+db.restaurants.find({'grades.score':{$lt:5}})
 ```
 ### 34. Write a MongoDB query to find the restaurants that have at least one grade with a score of less than 5 and are located in the borough of Manhattan.
 solution:
 ```php
-
+db.restaurants.find({'grades.score':{$lt:5}, borough:'Manhattan' })
 ```
 ### 35. Write a MongoDB query to find the restaurants that have at least one grade with a score of less than 5 and are located in the borough of Manhattan or Brooklyn.
 solution:
 ```php
+db.restaurants.find({'grades.score':{$lt:5}, borough:{$in:['Manhattan', 'Brooklyn']}})
 
 ```
 ### 36. Write a MongoDB query to find the restaurants that have at least one grade with a score of less than 5 and are located in the borough of Manhattan or Brooklyn, and their cuisine is not American.
 solution:
 ```php
+db.restaurants.find({'grades.score':{$lt:5}, borough:{$in:['Manhattan', 'Brooklyn']}, cuisine:{$ne:'American '} })
 
 ```
 ### 37. Write a MongoDB query to find the restaurants that have at least one grade with a score of less than 5 and are located in the borough of Manhattan or Brooklyn, and their cuisine is not American or Chinese.
 solution:
 ```php
+db.restaurants.find({'grades.score':{$lt:5}, borough:{$in:['Manhattan', 'Brooklyn']}, cuisine:{$nin:['American ', 'Chinese']}})
 
 ```
 ### 38. Write a MongoDB query to find the restaurants that have a grade with a score of 2 and a grade with a score of 6.
 solution:
 ```php
+db.restaurants.find({$and:[{'grades.score':2}, {'grades.score':6}]})
 
 ```
 ### 39. Write a MongoDB query to find the restaurants that have a grade with a score of 2 and a grade with a score of 6 and are located in the borough of Manhattan.
 solution:
 ```php
+db.restaurants.find({$and:[{'grades.score':2}, {'grades.score':6}, {borough:'Manhattan'}]})
 
 ```
 ### 40. Write a MongoDB query to find the restaurants that have a grade with a score of 2 and a grade with a score of 6 and are located in the borough of Manhattan or Brooklyn.
 solution:
 ```php
-
+db.restaurants.find({$and:[{'grades.score':2}, {'grades.score':6}, {borough:{$in:['Manhattan', 'Brooklyn']}}]})
 ```
 ### 41. Write a MongoDB query to find the restaurants that have a grade with a score of 2 and a grade with a score of 6 and are located in the borough of Manhattan or Brooklyn, and their cuisine is not American.
 solution:
