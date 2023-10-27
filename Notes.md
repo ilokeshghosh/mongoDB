@@ -109,6 +109,13 @@ db.restaurants.find({'address.coord':{$type:'double'}})
 
 db.restaurants.find({'address.coord':{$type:1}})
 ```
+
+### Find using `$elemMatch`
+```php
+// $elemMatch is used find at least one element in array field in a document
+db.restaurants.find({grades:{$elemMatch:{score:{$gte:90}}}})
+```
+
 ### Find using `$mod` to check divisibility
 ```php
 db.restaurants.find({'grades.score':{$mod:[7,0]}})

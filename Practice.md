@@ -33,7 +33,7 @@ db.restaurants.find({}, {restaurant_id:true, name:true, borough:true, address:{z
 
 ### 5. Write a MongoDB query to display all the restaurants which are in the borough Bronx.
 solution:
-```php
+```php with how you're checking for the presence of both grades with scores of 2 and 6. When you
 db.restaurants.find({borough:'Bronx'})
 ```
 
@@ -233,52 +233,99 @@ db.restaurants.find({$and:[{'grades.score':2}, {'grades.score':6}, {borough:{$in
 ### 41. Write a MongoDB query to find the restaurants that have a grade with a score of 2 and a grade with a score of 6 and are located in the borough of Manhattan or Brooklyn, and their cuisine is not American.
 solution:
 ```php
-
+db.restaurants.find({$and:[{'grades.score':2}, {'grades.score':6}], $or:[{borough:'Manhattan'}, {borough:'Brooklyn'}], cuisine:{$ne:'American '}})
 ```
 ### 42. Write a MongoDB query to find the restaurants that have a grade with a score of 2 and a grade with a score of 6 and are located in the borough of Manhattan or Brooklyn, and their cuisine is not American or Chinese.
 solution:
 ```php
+db.restaurants.find({
+  $and: [
+{ borough: { $in: ["Manhattan", "Brooklyn"] } }, 
+{ cuisine: { $nin: ["American", "Chinese"] } }, 
+{ grades: { $elemMatch: { score: 2 } } },
+{ grades: { $elemMatch: { score: 6 } } }
+  ]
+})
 
 ```
 ### 43. Write a MongoDB query to find the restaurants that have a grade with a score of 2 or a grade with a score of 6.
 solution:
 ```php
-
+db.restaurants.find({ 
+$or:    [ 
+{ 'grades': { $elemMatch: { 'score': 2 } } }, 
+{ 'grades': { $elemMatch: { 'score': 6 } } }
+        ]
+})
 ```
 ### 44. Write a MongoDB query to find the restaurants that have a grade with a score of 2 or a grade with a score of 6 and are located in the borough of Manhattan.
 solution:
 ```php
+db.restaurants.find({
+$and:[
+        {$or:[ 
+{'grades':{$elemMatch:{'score':2}}}, 
+{'grades':{$elemMatch:{'score':6}}}
+        ]}, 
+{'borough':'Manhattan'}
+]
+})
 
 ```
 ### 45. Write a MongoDB query to find the restaurants that have a grade with a score of 2 or a grade with a score of 6 and are located in the borough of Manhattan or Brooklyn.
 solution:
 ```php
-
+db.restaurants.find({ $and: [{ $or: [{ 'grades': { $elemMatch: { 'score': 2 } } }, { 'grades': { $elemMatch: { 'score': 6 } } }] }, { $or: [{ 'borough': 'Manhattan' }, { 'borough': 'Brooklyn' }] }] })
 ```
 ### 46. Write a MongoDB query to find the restaurants that have a grade with a score of 2 or a grade with a score of 6 and are located in the borough of Manhattan or Brooklyn, and their cuisine is not American.
 solution:
 ```php
-
+db.restaurants.find({ 
+$and: [{ 
+$or: [{ 'grades': { $elemMatch: { 'score': 2 } } }, 
+{ 'grades': { $elemMatch: { 'score': 6 } } 
+}] }, 
+{ $or: [
+{ 'borough': 'Manhattan' }, 
+{ 'borough': 'Brooklyn' }
+]}, 
+{cuisine:{$ne:'American '}} 
+]}
+)
 ```
 ### 47. Write a MongoDB query to find the restaurants that have a grade with a score of 2 or a grade with a score of 6 and are located in the borough of Manhattan or Brooklyn, and their cuisine is not American or Chinese.
 solution:
 ```php
-
+db.restaurants.find({ 
+$and: [{ 
+$or: [
+{ 'grades': { $elemMatch: { 'score': 2 } } }, 
+{ 'grades': { $elemMatch: { 'score': 6 } } 
+}] }, 
+{ $or: [
+{ 'borough': 'Manhattan' }, 
+{ 'borough': 'Brooklyn' }
+] }, 
+{ cuisine: { 
+$nin: ['American ', 'Chinese'] } 
+}
+]}
+)
 ```
 ### 48. Write a MongoDB query to find the restaurants that have all grades with a score greater than 5.
 solution:
 ```php
-
+db.restaurants.find({'grades':{$not:{$elemMatch:{'score':{$lte:5}}}}})
 ```
 ### 49. Write a MongoDB query to find the restaurants that have all grades with a score greater than 5 and are located in the borough of Manhattan.
 solution:
 ```php
-
+db.restaurants.find({$and:[{'grades':{$not:{$elemMatch:{'score':{$lte:5}}}}},{borough:'Manhattan'}]})
 ```
 ### 50. Write a MongoDB query to find the restaurants that have all grades with a score greater than 5 and are located in the borough of Manhattan or Brooklyn.
 solution:
 ```php
-
+db.restaurants.find({$and:[{'grades':{$not:{$elemMatch:{'score':{$lte:5}}}}},{borough:{$in:['Manhattan', 'Brooklyn']}}]})
 ```
 ### 51. Write a MongoDB query to find the average score for each restaurant.
 solution:
