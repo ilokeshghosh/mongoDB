@@ -83,6 +83,10 @@ db.students.find({fullTime:true}).skip(5).limit(5)
 ```php
 db.students.find()
 ```
+#### find(not findOne) return a cursor on which we can do iteration operation like:
+```php
+db.restaurants.find({borough:'Brooklyn'},{_id:false, name:true, cuisine:true}).forEach((x)=>{printjson(x)})
+```
 
 ### Filter Find (`.find({query}, {projection})`)
 ```php
