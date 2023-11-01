@@ -35,6 +35,82 @@ db.createCollection('teachers')
 db.createCollection('teachers', {capped:true, size:10000000, max:100}, {autoIndexId:false})
 ```
 
+## validation
+
+#### Customized Collection Creation with validation
+```php
+db.createCollection('nonfiction',{
+    validator:{
+        $jsonSchema:{
+            required:['name', 'price'],
+            properties:{
+                name:{
+                    bsonType:'string',
+                    description:'must be a string and required'
+                },
+                price:{
+                    bsonType:'number',
+                    description:'must be a number and required'
+                }
+            }
+        }
+    },
+    validationAction: 'error'
+})
+
+// to paste in shell
+db.createCollection('nonfiction',{validator:{$jsonSchema:{required:['name', 'price'],properties:{name:{bsonType:'string',description:'must be a string and required'},price:{bsonType:'number',description:'must be a number and required'}}}},validationAction: 'error'})
+```
+
+#### Modify a collection validation
+```php
+
+// collMod : collection modifier
+db.runCommand({
+    collMod: 'nonfiction',
+    validator: {
+        $jsonSchema: {
+            required: ['name', 'price', 'authors'],
+            properties: {
+                name: {
+                    bsonType: 'string',
+                    description: 'must be a string and required'
+
+                },
+                price: {
+                    bsonType: 'number',
+                    description: 'must be a number and required'
+                },
+                authors: {
+                    bsonType: 'array',
+                    description: "must be a array types",
+                    items: {
+                        bsonType: ['object'],
+                        required: ['name', 'email'],
+                        properties: {
+                            name: {
+                                bsonType: 'string',
+                                description: 'author name must be in string'
+
+                            },
+                            email: {
+                                bsonType: 'string',
+                                description: 'author email must be in string'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    validationAction: 'error'
+})
+
+//to paste in shell
+db.runCommand({collMod: 'nonfiction',validator: {$jsonSchema: {required: ['name', 'price', 'authors'],properties: {name: {bsonType: 'string',description: 'must be a string and required'},price: {bsonType: 'number',description: 'must be a number and required'},authors: {bsonType: 'array',description: "must be a array types",items: {bsonType: ['object'],required: ['name', 'email'],properties: {name: {bsonType: 'string',description: 'author name must be in string'},email: {bsonType: 'string',description: 'author email must be in string'}}}}}}},validationAction: 'error'})
+
+```
+
 ### Drop a Collections
 ```php
 db.courses.drop()
@@ -50,6 +126,13 @@ db.courses.drop()
 ```php
   db.students.insertMany[{name:'Zyan', age:29, gpa:6.3, fullTime:true}, {name:'Jack', age:33, gpa:9.8, fullTime:false}, {name:'Harry', age:40, gpa:9.3, fullTime:true},{name:'Julia', age:27, gpa:4.5, fullTime:false}]
 
+```
+### Insert Many(`.insertMany({data},{options})`) with `ordered`
+`insertMany()` inserts data in ordered manner , we can mark the order as `false`
+```php
+db.students.insertMany([
+{name:'Zyan', age:29, gpa:6.3, fullTime:true}, 
+{name:'Jack', age:33, gpa:9.8, fullTime:false}], {ordered:false})
 ```
 
 # Sorting and limiting and Skipping
