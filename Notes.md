@@ -122,6 +122,16 @@ db.courses.drop()
   db.students.insertOne({name:'Joey', age:30, gpa:4.5, fullTime:false})
 
 ```
+
+### Insert with `concern`
+```php
+db.books.insertOne({name:'D', price:4},{writeConcern:{w:0, j:true, wtimeout:1000}})
+{w:<value>, j:<boolean>, wtimeout:<number>}
+//w(acknowledgement): request acknowledgement on task completion  
+//j(journal): write the data about task to recover the system failure 
+//wtimeout: setting timeout for any operation
+```
+
 ### Insert Many
 ```php
   db.students.insertMany[{name:'Zyan', age:29, gpa:6.3, fullTime:true}, {name:'Jack', age:33, gpa:9.8, fullTime:false}, {name:'Harry', age:40, gpa:9.3, fullTime:true},{name:'Julia', age:27, gpa:4.5, fullTime:false}]
@@ -134,6 +144,8 @@ db.students.insertMany([
 {name:'Zyan', age:29, gpa:6.3, fullTime:true}, 
 {name:'Jack', age:33, gpa:9.8, fullTime:false}], {ordered:false})
 ```
+
+
 
 # Sorting and limiting and Skipping
 ### Sorting
