@@ -16,8 +16,15 @@
 ```php
  mongosh
 ```
+# Import json by command
+```php
+PS C:\Users\ghosh> mongoimport "D:\GIT REPO\mongoDB\students.json" -d college -c students --jsonArray --drop
 
-
+//-d : database name(college will be created if not present)
+// -c : collection name(students will be created if not present)
+//--jsonArray: specify the json will be in array format
+//--drop : if collection with same name is already present drop the old one
+```
 
 # Collections
 ### Show Collection
@@ -311,6 +318,9 @@ db.students.deleteMany({registerDate:{$exists:false}})
 ### AND
 ```php
   db.students.find({$and:[{fullTime:true},{age:{$lte:30}}]})
+
+//In this case only last condition will be applicable as age is repeated(rule of json)
+  db.students.find({age:{$gte:25}},{age:{$lte:30}})
 ```
 
 ### OR
