@@ -337,7 +337,69 @@ db.students.deleteMany({registerDate:{$exists:false}})
 ```php
   db.students.find({age:{$not:{$gte:30}}})
 ```
+# Evaluation Operators
+### `$expr` : Allows use of aggregation expressions within the query language.
+```php
+//this will find all document in the 'collection' where the value of 'field1' is greater than the value of 'field2'
+db.collection.find({
+  $expr:{
+    $gt:['$field1', '$field2']
+  }
+})
 
+```
+### `$jsonSchema` : Validate documents against the given JSON Schema.
+```php
+// we have seen this Creation of collection with validation
+// Assuming you already have a 'nonfiction' collection
+db.runCommand({
+  collMod: 'nonfiction',
+  validator: {
+    $jsonSchema: {
+      required: ['name', 'price'],
+      properties: {
+        name: {
+          bsonType: 'string',
+          description: 'must be a string and required'
+        },
+        price: {
+          bsonType: 'number',
+          description: 'must be a number and required'
+        }
+      }
+    }
+  },
+  validationAction: 'error'
+})
+
+
+```
+### `$mod` : Performs a modulo operation on the value of a field and selects documents with a specified result.
+```php
+db.students.find({age:{$mod:[2,0]}})
+```
+### `$regex` : Selects documents where values match a specified regular expression.
+```php
+ db.students.find({name:{$regex: /^Lo/}})
+```
+### `$text` : Performs text search.
+```php
+//1st create text index on a field
+db.students.createIndex({bio:'text'})
+
+//then find the text(on the index field/fields)
+ db.students.find({$text :{$search:'web technology tech'}})
+```
+### `$where` : Matches documents that satisfy a JavaScript expression. It is generally discouraged due to security concerns because it allows arbitrary JavaScript code execution. 
+```php
+// Find documents where the sum of 'field1' and 'field2' is greater than 10
+db.collection.find({
+  $where: function() {
+    return (this.field1 + this.field2) > 10;
+  }
+})
+
+```
 # Indexes
 ### Create Index
 ```php
