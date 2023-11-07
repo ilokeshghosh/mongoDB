@@ -227,12 +227,12 @@ db.restaurants.find({grades:{$elemMatch:{score:{$gte:90}}}})
 db.restaurants.find({'grades.score':{$mod:[7,0]}})
 ```
 # Update
-### Update One(`.updateOne(filter,update)`) using (`$set`)
+### Update One(`.updateOne(filter,update,concern/upsert)`) using (`$set`)
 ```php
 db.students.updateOne({name:'Joey'},{$set:{name:'Sam'}})
 ```
 
-### Update One(`.updateOne(filter,update)`) using (`$unset`)
+### Update One(`.updateOne(filter,update,concern/upsert)`) using (`$unset`)
 ```php
 db.students.updateOne({_id: ObjectId("6534da900fc6e922801f44c0")}, {$unset:{fullTime:''}})
 ```
@@ -246,8 +246,44 @@ db.students.updateOne({_id: ObjectId("6534da900fc6e922801f44c0")}, {$unset:{full
 ```php
 db.students.updateMany({fullTime:{$exists:false}}, {$set:{fullTime:true}})
 ```
-
-
+## Advance Update
+### `$inc` increment
+```php
+//increment all age field by 2
+ db.students.updateMany({}, {$inc:{age:2} })
+```
+### `$min` 
+```php
+//to decrease the specific field
+ db.students.updateOne({name:/^Billy/},{$min:{age:3}})
+```
+### `$max`
+```php
+//to increase the specific field
+db.students.updateOne({name:/^Billy/},{$max:{age:20}})
+```
+### `$mul` multiplication
+```php
+// to multiply a specific field by a number 
+db.students.updateOne({name:/^Billy/},{$mul:{age:2}})
+```
+### `$unset`
+```php
+//to remove/delete any field 
+ db.students.updateOne({name:/^Billy/},{$unset:{age:0}})
+```
+### `$rename`
+```php
+// to rename any field 
+ db.students.updateMany({},{$rename:{age:'studentAge'}})
+```
+### `$upsert` (update + insert) 
+```php
+// update age of name:`Ryan`,if name not found insert the name and age 
+ db.students.updateOne({name:'Ryan'},{$set:{age:20}},{upsert:true})
+```
+## Update Nested Array
+### 
 
 # Delete
 ### Delete One
