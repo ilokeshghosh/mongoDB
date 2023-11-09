@@ -283,7 +283,56 @@ db.students.updateOne({name:/^Billy/},{$mul:{age:2}})
  db.students.updateOne({name:'Ryan'},{$set:{age:20}},{upsert:true})
 ```
 ## Update Nested Array
-### 
+#### sample data
+```php
+{
+        name: 'Sam',
+        Hobbies: ['Walk', 'Gym'],
+        identity: { hasPanCard: true, hasAdhaarCard: false },
+        bio: 'i am human',
+        experience: [
+            { company: 'Apple', duration: 3 },
+            { company: 'Microsoft', duration: 0.2 }
+
+        ],
+        age: 23
+    }
+```
+### Array Update
+```php
+//for all experiences lesser than and equal to 1 year for all students `add a new field field 'neglect':true`
+
+//1st matched update:
+ db.students.updateMany({experience:{$elemMatch:{duration:{$lte:1}}}}, {$set:{'experience.$.neglect':true}})
+
+//all matched update:
+db.students.updateMany({experience:{$elemMatch:{duration:{$lt:2}}}}, {$set:{'experience.$[e].neglect':true}}, {arrayFilters:[{ 'e.duration':{$lt:2} }]})
+
+//all update:
+db.students.updateMany({experience:{$elemMatch:{duration:{$lte:1}}}}, {$set:{'experience.$[].neglect':1}})
+```
+
+### `$push`
+```php
+ db.students.updateOne({name:'Ram'},{$push:{experience:{company:'Amazon',duration:1}}})
+```
+### `$pull`
+```php
+db.students.updateOne({name:'Ram'},{$pull:{experience:{company:'Amazon',duration:1}}})
+```
+### `$pop`
+```php
+// 1 to remove the last one
+ db.students.updateOne({name:'Lara'},{$pop:{experience:1}})
+
+//-1 to remove the 1st one
+ db.students.updateOne({name:'Lara'},{$pop:{experience:-1}})
+```
+
+### `addToSet` no duplicate entry will be allowed
+```php
+db.students.updateOne({name:'Ram'},{$addToSet:{experience:{company:'Amazon',duration:1}}})
+```
 
 # Delete
 ### Delete One
