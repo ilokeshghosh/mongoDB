@@ -486,9 +486,41 @@ db.collection.find({
 
 ```
 # Indexes
+### <mark>Note</mark> :  
+### without indexing :Process of finding document is call Collection Scan(`Collscan`)
+### with indexing  : Process of finding document is call Index Scan(`IXSCAN`)
+
+### Note on index:
+- Indexes are stored in a B-tree data structure.
+- It stores
+  - Index Keys
+  - Pointers to the documents in the collection
+- When a query is executed, MongoDB can use the index to quickly locate the documents that match the query by searching through the B-tree(Balanced tree).
+#### The Trade-off
+- storage space
+- write performance
+#### There are several types of indexed available in MongoDB
+- Single field indexes
+- Compound indexes
+- Text indexes
+#### When not to use indexing in mongodb?
+- When the collections is small
+- When the collections is frequently updated
+- When the queries are complex(multiple fields)
+- When the collection is large(make less indexes)
+
+#### Compound Indexes(order matters)
+ 
+
+### Display the query stats
+```php
+db.students.find({age:{$lte:30}}).explain()
+db.students.find({age:{$lte:30}}).explain('executionStats')
+```
+
 ### Create Index
 ```php
-  db.students.createIndex({name:1})
+  db.students.createIndex({name:1}) // 1 for ascending order and -1 for descending order
 ```
 
 ### Get Indexes
