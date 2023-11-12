@@ -1,0 +1,79 @@
+[{
+  "_id": {
+    "$oid": "654c625ea765bf746b6e960a"
+  },
+  "name": "Ram",
+  "Hobbies": [
+    "walk",
+    "cricket"
+  ],
+  "identity": {
+    "hasPanCard": true,
+    "hasAdhaarCard": true
+  },
+  "bio": "i am student",
+  "experience": [
+    {
+      "company": "TCS",
+      "duration": 0.5,
+      "neglect": true
+    },
+    {
+      "company": "Meta",
+      "duration": 2,
+      "neglect": 1
+    }
+  ],
+  "age": 25
+},
+{
+  "_id": {
+    "$oid": "654c625ea765bf746b6e960b"
+  },
+  "name": "Lara",
+  "Hobbies": [
+    "chess",
+    "cricket"
+  ],
+  "identity": {
+    "hasPanCard": false,
+    "hasAdhaarCard": true
+  },
+  "bio": "i am coder",
+  "experience": [
+    {
+      "company": "Wipro",
+      "duration": 1.2,
+      "neglect": true
+    }
+  ],
+  "age": 28
+},
+{
+  "_id": {
+    "$oid": "654c625ea765bf746b6e960c"
+  },
+  "name": "Sam",
+  "Hobbies": [
+    "Walk",
+    "Gym"
+  ],
+  "identity": {
+    "hasPanCard": true,
+    "hasAdhaarCard": false
+  },
+  "bio": "i am human",
+  "experience": [
+    {
+      "company": "Apple",
+      "duration": 3,
+      "neglect": 1
+    },
+    {
+      "company": "Microsoft",
+      "duration": 0.2,
+      "neglect": true
+    }
+  ],
+  "age": 23
+}]
