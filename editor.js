@@ -122,3 +122,24 @@ db.runCommand({ collMod: 'nonfiction', validator: { $jsonSchema: { required: ['n
         age: 23
     }
 ]
+
+
+//using filter operator
+db.students.aggregate(
+    [
+        {
+            $group:{
+                _id:null,
+                avgScore:{
+                    $avg:{
+                        $filter:{
+                            input:'$scores',
+                            as:'score',
+                            cond:{gt:['$age',20]}
+                        }
+                    }
+                }
+            }
+        }
+    ]
+)
