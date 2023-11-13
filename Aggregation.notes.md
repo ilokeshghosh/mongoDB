@@ -41,13 +41,13 @@ db.students.aggregate([{$group:{_id:'$age', name:{$push:'$name'}}}])
 ```
 The names field uses the `$push` operator to add the name field from each document in the group to an array
 
-#### Group teachers by age and also show complete document per age group
+#### Group students by age and also show complete document per age group
 ```php
 db.students.aggregate([{$group:{_id:'$age', students:{$push:'$$ROOT'}}}]) 
 ```
 The `$$ROOT` value is a reference to the current document being processed in the pipeline, which represents the complete document
 
-#### Give a count per age of male teacher
+#### Give a count per age of male students
 ```php
  db.students.aggregate([{$match:{gender:'Male'}}, {$group:{_id:'$age', count:{$sum:1}}}])
 ```
