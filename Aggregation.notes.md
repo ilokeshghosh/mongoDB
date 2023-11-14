@@ -137,3 +137,40 @@ db.students.aggregate(
     ]
 )
 ```
+
+### `$bucket` operator
+when we want to categorize into discrete groups based on specified boundaries.
+
+#### `$bucket` syntax :
+```php
+{
+    $bucket:{
+        groupBy:<expression>,
+        boundaries:[<boundary1>, <boundary2>, ...],
+        default:<expression>,
+        output:{
+            <outputField>:{<accumulator>:<expression>}
+        }
+    }
+}
+```
+
+#### Categorize male students based on their ages into three buckets (`ages less than 25`), (`ages between 25 and 50`), (`ages between 50 and 75`) and (`ages above 75`).
+
+```php
+db.students.aggregate([{$match:{gender:'Male'}}, {$bucket:{ groupBy:'$age', boundaries:[0,25,50,75], default:'ages above 75', output:{count:{$sum:1}}}}])
+```
+`output:`
+```php
+[
+  { _id: 0, count: 8 },
+  { _id: 25, count: 15 },
+  { _id: 50, count: 12 },
+  { _id: 'ages above 75', count: 13 }
+]
+```
+
+#### Categorize male students based on their ages into three buckets (`ages less than 25`), (`ages between 25 and 50`), (`ages between 50 and 75`) and (`ages above 75`) and display the name.
+```php
+db.students.aggregate([{$match:{gender:'Male'}}, {$bucket:{ groupBy:'$age', boundaries:[0,25,50,75], default:'ages above 75', output:{count:{$sum:1}, names:{$push:'$name'}}}}])
+```
