@@ -141,6 +141,13 @@ db.runCommand({collMod: 'nonfiction',validator: {$jsonSchema: {required: ['name'
 db.courses.drop()
 ```
 
+### Create a capped Collections
+
+```php
+db.createCollection('order_logs', {capped:true, max:4, size:100000})
+// when on the condition(max:4, size:100000) matches the collection will be capped
+```
+
 # Inert Data
 
 ### Inert One
@@ -592,4 +599,3 @@ db.collection.find({
 })
 
 ```
-
