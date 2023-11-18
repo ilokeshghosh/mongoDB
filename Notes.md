@@ -1,5 +1,5 @@
 # Configuration and Start Sever
-
+### Connections String :  mongodb://localhost:27017
 ### start mongo daemon
 
 ```php
