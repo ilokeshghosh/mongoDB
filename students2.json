@@ -13,7 +13,7 @@
   },
   "bio": "i am student",
   "experience": [
-    {
+    { 
       "company": "TCS",
       "duration": 0.5,
       "neglect": true
